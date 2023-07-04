@@ -14,20 +14,18 @@ const app = createApp(App);
 
 let instance: ComponentPublicInstance | null = null;
 
-function render(props = { container: document.body }) {
-  const { container } = props;
+function render(props?: QiankunProps) {
+  const { container } = props ?? {};
   app.use(router);
   app.use(ElementPlus);
-  instance = app.mount(
-    container ? container.querySelector("#container") : "#container"
-  );
+  instance = app.mount(container ?? "#container");
 }
 
 renderWithQiankun({
   bootstrap() {
     console.log("[vue] vue app bootstraped");
   },
-  mount(props) {
+  mount(props = { container: document.body }) {
     console.log("[vue] props from main framework", props);
     render(props);
   },
