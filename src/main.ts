@@ -9,15 +9,19 @@ import {
   qiankunWindow,
   type QiankunProps,
 } from "vite-plugin-qiankun/dist/helper";
+import { createPinia } from "pinia";
 import { router } from "./router";
+import { useUserStore } from "./store/user";
+const pinia = createPinia();
 const app = createApp(App);
 
+app.use(pinia);
+app.use(router);
+app.use(ElementPlus);
 let instance: ComponentPublicInstance | null = null;
 
 function render(props?: QiankunProps) {
   const { container } = props ?? {};
-  app.use(router);
-  app.use(ElementPlus);
   instance = app.mount(container ?? "#container");
 }
 
@@ -27,6 +31,11 @@ renderWithQiankun({
   },
   mount(props = { container: document.body }) {
     console.log("[vue] props from main framework", props);
+    if (props.userStore) {
+      const userStore = useUserStore();
+      console.log("main framework props data:", props.userStore?.()?.token);
+      userStore.setMainAppData(props.userStore);
+    }
     render(props);
   },
   unmount() {

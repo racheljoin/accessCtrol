@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 
 <template>
-  <main>user</main>
+  <main></main>
 </template>
 
